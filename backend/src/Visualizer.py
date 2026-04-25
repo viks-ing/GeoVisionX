@@ -10,7 +10,6 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 from PIL import Image
-import streamlit as st
 
 
 def render_ndvi_colormap(img_array: np.ndarray) -> Image.Image:
@@ -128,49 +127,3 @@ def render_metrics_chart():
 
     plt.tight_layout()
     return fig
-
-
-def render_edge_specs():
-    """Display edge inference feasibility panel."""
-    st.markdown("### 🔧 Edge Inference Feasibility")
-    st.markdown(
-        "Target platform: **Jetson AGX Orin** (on 6U CubeSat payload) — "
-        "equivalent to what TM2Space's upcoming satellite carries."
-    )
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown("#### 📦 Model Size")
-        st.metric("TerraMind-tiny encoder", "~18 MB")
-        st.metric("Multi-head predictor", "~2.1 MB")
-        st.metric("Scorer (TM-small head)", "~4.8 MB")
-        st.metric("**Total footprint**", "**~25 MB**", delta="Fits in 32MB SRAM")
-        st.caption("Full TerraMind-base: 307 MB — too large. Tiny variant recommended.")
-
-    with col2:
-        st.markdown("#### ⏱️ Inference Latency")
-        st.metric("Jetson AGX Orin (INT8)", "~220 ms/tile", delta="meets <500ms SLA")
-        st.metric("Jetson Nano (FP16)", "~1.4 s/tile")
-        st.metric("RTX 3050 (dev machine)", "~35 ms/tile")
-        st.metric("Tiles per orbit pass", "~120")
-        st.caption("INT8 quantization via TensorRT reduces latency by ~3.5×.")
-
-    with col3:
-        st.markdown("#### ⚡ Power Budget")
-        st.metric("Peak inference power", "~8 W")
-        st.metric("Idle power", "~1.2 W")
-        st.metric("6U CubeSat solar budget", "~20 W peak")
-        st.metric("Duty cycle feasibility", "~40%")
-        st.caption("Adaptive trigger reduces compute by ~60% by skipping clear-sky passes.")
-
-    st.divider()
-    st.markdown("""
-    **Feasibility Summary:**
-    - ✅ 25 MB model fits in Jetson LPDDR5 (32 GB)
-    - ✅ 220 ms latency allows real-time scene triage during overpass
-    - ✅ 8W peak fits within standard 6U CubeSat power budget
-    - ✅ Adaptive trigger cuts inference to ~40% of passes → power savings
-    - ⚠️ Cloud cover requires SAR fusion (Sentinel-1) for reliable operation in monsoon regions
-    - ⚠️ On-orbit quantization testing not yet performed (TensorRT export needed)
-    """)
