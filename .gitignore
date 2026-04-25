@@ -1,0 +1,26 @@
+# Virtual environment
+.velora8/
+venv/
+env/
+.env
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/
+
+# Local data / logs
+*.log
+data/
+temp/
