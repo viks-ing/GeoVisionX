@@ -35,3 +35,7 @@ plotly
 streamlit-image-coordinates
 pandas
 rastervision
+fastapi
+uvicorn
+python-multipart
+gunicorn
