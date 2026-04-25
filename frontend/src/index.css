@@ -1,0 +1,478 @@
+:root {
+  --bg-primary: #05070a;
+  --bg-secondary: #0c1017;
+  --accent-primary: #00f2ff;
+  --accent-secondary: #7000ff;
+  --text-primary: #e0e6ed;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --status-high: #ff4b4b;
+  --status-med: #ffa500;
+  --status-low: #21c354;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px !important;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* â”€â”€ SIDEBAR (Hidden in Dashboard but used for logic) â”€â”€ */
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.control-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+select, input[type="text"], button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.75rem;
+  color: white;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+option {
+  background-color: var(--bg-secondary);
+  color: white;
+}
+
+select:focus, button:hover {
+  border-color: var(--accent-primary);
+  outline: none;
+}
+
+.run-btn {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+}
+
+/* â”€â”€ DASHBOARD HUD â”€â”€ */
+/* ── PERFECTED DASHBOARD GRID ── */
+.dashboard {
+  padding: 3rem 4rem; 
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem; 
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.hud-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.metric-card, .progress-card, .image-panel {
+  background: rgba(12, 16, 23, 0.4);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.metric-value {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.imagery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.image-wrapper {
+  aspect-ratio: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scanning-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-primary);
+  animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+  from { top: 0; }
+  to { top: 100%; }
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge-HIGH { background: #ff4b4b; color: white; }
+.badge-MEDIUM { background: #ffa500; color: black; }
+.badge-LOW { background: #21c354; color: white; }
+
+.progress-bar-bg {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--accent-primary);
+  transition: width 0.5s ease-out;
+}
+
+/* â”€â”€ SPLASH & CONFIG (STEADY) â”€â”€ */
+.splash-container, .config-container {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #0a0e14 0%, #05070a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* No Animations here for text */
+.logo-static {
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5rem;
+  z-index: 10;
+  text-align: center;
+}
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  perspective: 800px;
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fff, 0 0 20px rgba(0, 242, 255, 0.4); /* Intense cyan-white glow */
+  animation: star-pulse infinite alternate ease-in-out;
+}
+
+@keyframes star-pulse {
+  from { opacity: 0.3; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes warp {
+  from { transform: translateZ(-500px); opacity: 0; }
+  50% { opacity: 1; }
+  to { transform: translateZ(500px); opacity: 0; }
+}
+
+.star-warp {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #fff;
+  animation: warp linear infinite;
+}
+
+.config-card {
+  width: 100%;
+  max-width: 500px;
+  background: rgba(12, 16, 23, 0.6);
+  backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 24px;
+  padding: 3rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* â”€â”€ REPAIRED CONFIGURATION LAYOUT â”€â”€ */
+.config-card {
+  width: 100%;
+  max-width: 480px;
+  background: rgba(12, 16, 23, 0.7);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem; /* Consistent gap */
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+.custom-file-upload input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+  display: none; /* Force hide */
+}
+
+.file-trigger {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(0, 242, 255, 0.05);
+  color: var(--accent-primary);
+  border: 1px dashed rgba(0, 242, 255, 0.5);
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.file-trigger:hover {
+  background: rgba(0, 242, 255, 0.15);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+}
+
+/* Run Button */
+.run-btn {
+  width: 100%;
+  padding: 1.1rem !important;
+  background: linear-gradient(135deg, #00f2ff, #7000ff) !important;
+  color: #000 !important;
+  font-weight: 900 !important;
+  border-radius: 12px !important;
+  border: none !important;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+/* Back Button */
+.back-btn {
+  width: 100%;
+  padding: 0.8rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 75, 75, 0.3) !important;
+  color: #ff4b4b !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+  margin-top: 0.5rem; /* Separates it from the button above */
+}
+/* â”€â”€ RESTORED SPLASH BUTTON â”€â”€ */
+.enter-btn {
+  position: relative;
+  z-index: 100;
+  margin-top: 3rem;
+  padding: 1rem 3.5rem;
+  background: var(--accent-primary);
+  color: #000;
+  border: none;
+  font-weight: 800;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 50px;
+  text-transform: uppercase;
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+  transition: all 0.3s ease;
+}
+
+.enter-btn:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 0 50px rgba(0, 242, 255, 0.6);
+}
+/* â”€â”€ PREMIUM ANALYSIS STYLES â”€â”€ */
+.analysis-card {
+  background: rgba(12, 16, 23, 0.4) !important;
+  backdrop-filter: blur(25px) saturate(180%) !important;
+  border: 1px solid rgba(0, 242, 255, 0.15) !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.3s ease;
+}
+
+.analysis-card:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+}
+
+.terminal-window {
+  background: #000 !important;
+  border: 1px solid #111 !important;
+  border-top: 4px solid var(--accent-primary) !important;
+  box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.05);
+  border-radius: 4px !important;
+}
+
+.progress-bar-fill {
+  box-shadow: 0 0 15px var(--accent-primary);
+  background: linear-gradient(90deg, var(--accent-primary), #7000ff) !important;
+}
+
+.brand-gradient {
+  background: linear-gradient(to right, #fff, var(--accent-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+/* â”€â”€ TYPOGRAPHIC SYNC â”€â”€ */
+.brand-gradient, .metric-value, h2, h3, h4 {
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-weight: 900 !important;
+}
+
+.metric-label, .control-label, .panel-label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  opacity: 0.8;
+}
+
+.metric-value {
+  font-size: 2rem;
+  color: #fff;
+  letter-spacing: 1px;
+}
+/* â”€â”€ GLOBAL CORNER BACK BUTTON â”€â”€ */
+.corner-back-btn {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.corner-back-btn:hover {
+  background: var(--accent-primary);
+  color: #000;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+  transform: translateX(-5px);
+}
+/* â”€â”€ CASCADIA CODE BUTTON THEME â”€â”€ */
+button, .file-trigger, .corner-back-btn, .enter-btn, .run-btn, .back-btn, .new-analysis-btn {
+  font-family: 'Cascadia Code', 'Cascadia Mono', 'Courier New', monospace !important;
+  font-weight: 600 !important;
+  letter-spacing: 1px !important;
+}
+/* â”€â”€ SILVER ORBITAL SPECTRUM â”€â”€ */
+.starfield::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(120deg, transparent 30%, rgba(211, 212, 216, 0.05) 50%, transparent 70%),
+    linear-gradient(-120deg, transparent 40%, rgba(211, 212, 216, 0.03) 60%, transparent 80%);
+  filter: blur(80px);
+  animation: spectral-flow 15s ease-in-out infinite alternate;
+  z-index: -1;
+}
+
+@keyframes spectral-flow {
+  from { transform: scale(1) rotate(0deg); opacity: 0.5; }
+  to { transform: scale(1.5) rotate(10deg); opacity: 0.8; }
+}
+
+.data-trail {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, #D3D4D8, #fff);
+  box-shadow: 0 0 15px rgba(211, 212, 216, 0.6); /* Intensified silver glow */
+}
