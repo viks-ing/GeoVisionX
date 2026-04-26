@@ -67,6 +67,7 @@ Be honest about the gaps — they are the most useful part of this document for 
 
 ```bash
 # Backend
+cd GeoVisionX-main
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
